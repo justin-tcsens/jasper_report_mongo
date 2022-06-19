@@ -1,10 +1,8 @@
 package my.com.tcsens.vehiclemanagement.service;
 
-
-import lombok.val;
-import my.com.tcsens.vehiclemanagement.dao.VehicleDao;
 import my.com.tcsens.vehiclemanagement.dto.Vehicle;
 import my.com.tcsens.vehiclemanagement.model.VehicleModel;
+import my.com.tcsens.vehiclemanagement.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +11,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
-    private final VehicleDao vehicleDao;
+    private final VehicleRepository vehicleRepository;
 
-    public VehicleService(VehicleDao vehicleDao) {
-        this.vehicleDao = vehicleDao;
+    public VehicleService(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
     }
 
     public List<Vehicle> getVehicles(String carPlateNum) {
-        return vehicleDao.getVehicleByCarPlateNumber(carPlateNum)
+        return vehicleRepository.getVehicleByCarPlateNumber(carPlateNum)
                 .stream()
                 .filter(Objects::nonNull)
                 .map(this::mapDTO)
