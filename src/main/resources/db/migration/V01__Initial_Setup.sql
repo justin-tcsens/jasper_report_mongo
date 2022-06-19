@@ -9,7 +9,6 @@ create table vehicle (
     tyre_num int not null,
     roadtax_expiry varchar(10) not null,
     manufacture_year varchar(4) not null,
-    image_name varchar(50) not null,
     CONSTRAINT pk_vehicle_id primary key (id)
 );
 

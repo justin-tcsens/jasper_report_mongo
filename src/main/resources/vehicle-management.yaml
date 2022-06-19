@@ -15,6 +15,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/pageNoParam'
         - $ref: '#/components/parameters/pageSizeParam'
+        - $ref: '#/components/parameters/manufactureYearParam'
         - $ref: '#/components/parameters/carPlateNumberParam'
       responses:
         '200':
@@ -22,36 +23,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vehicles'
-    
-  /vehicle/image:
+                $ref: '#/components/schemas/VehiclesDto'
+    post:
+      tags:
+        - "Vehicle"
+      summary: Create new vehicle profile
+      description: Create new vehicle profile 
+      operationId: createVehicleProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleDto'
+      responses:
+        '200':
+          description: Vehicle profile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleDto'
+   
+  /vehicle/{vehicleId}:
     get:
       tags:
         - "Vehicle"
-      summary: Get vehicle image
-      description:  Get vehicle image
-      operationId: getVehicleImageByFileName
+      summary: Get vehicle details by given Id.
+      description: Get vehicle details by given Id.
+      operationId: getVehicleById
       parameters:
-        - name: fileName
+        - name: vehicleId
           required: true
-          in: query
+          in: path
           schema:
-            type: string
+            type: integer
       responses:
-          '200':
-            description: Vehicle image
-            content:
-              application/octet-stream:
-                schema:
-                  type: string
-                  format: binary
-            headers:
-              Content-Disposition:
-                schema:
-                  type: string
-                  description: | 
-                    Used only with 'application/octet-stream' responses.
-                    Example: attachment; filename="8000541210.pdf"
+        '200':
+          description: Vehicle details for the given Id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleDto'
 
   /summon:
     get: 
@@ -68,24 +79,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Summons'
+                $ref: '#/components/schemas/SummonsDto'
 
-  /user/token:
+  /summon/report:
     get: 
       tags:
-        - 'Users'
-      summary: Get user thumbprint from TokenSec library.
-      description: Get user thumbprint from TokenSec library.
-      operationId: getUserThumbprint
+        - 'Summons'
+      summary: Get list of summary summon based on filtering criteria.
+      description: Get list of summon based on filtering criteria.
+      operationId: getSummonSummaryByCriteria
       parameters:
-        - $ref: '#/components/parameters/userIdParam'
+        - $ref: '#/components/parameters/carPlateNumberParam'
       responses:
         '200':
-          description: Summon details for the given car plate number.
-          content:
-            text/plain:
-              schema:
-                type: string
+          description: Summon summary for the given car plate number.
+          # content:
+          #   application/json:
+          #     schema:
+          #       $ref: '#/components/schemas/SummonsDto'
 
 components:
   parameters:
@@ -105,19 +116,19 @@ components:
       schema:
         type: integer
 
+    manufactureYearParam:
+      name: manufactureYear
+      in: query
+      description: Manufacturer year
+      required: false
+      schema:
+        type: string
+
     carPlateNumberParam:
       name: carPlateNumber
       in: query
       description: Vehicle car plate number
       required: false
-      schema:
-        type: string
-
-    userIdParam:
-      name: userId
-      in: query
-      description: User Id
-      required: true
       schema:
         type: string
 
@@ -132,12 +143,12 @@ components:
         timestamp:
           type: string
 
-    Vehicles:
+    VehiclesDto:
       type: array
       items:
-        $ref: '#/components/schemas/Vehicle'
+        $ref: '#/components/schemas/VehicleDto'
 
-    Vehicle:
+    VehicleDto:
       type: object
       properties:
         id: 
@@ -193,19 +204,13 @@ components:
           example: 2020
           minLength: 4
           maxLength: 4
-        imageName:
-          type: string 
-          description: Vehicle image name
-          example: JPM4412.jpeg
-          minLength: 1
-          maxLength: 50
           
-    Summons:
+    SummonsDto:
       type: array
       items:
-        $ref: '#/components/schemas/Summon'
+        $ref: '#/components/schemas/SummonDto'
 
-    Summon:
+    SummonDto:
       type: object
       properties:
         id: 

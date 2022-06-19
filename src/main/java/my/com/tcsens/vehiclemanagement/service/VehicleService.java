@@ -1,7 +1,9 @@
 package my.com.tcsens.vehiclemanagement.service;
 
-import my.com.tcsens.vehiclemanagement.dto.Vehicle;
-import my.com.tcsens.vehiclemanagement.model.VehicleModel;
+
+import lombok.val;
+import my.com.tcsens.vehiclemanagement.dto.VehicleDto;
+import my.com.tcsens.vehiclemanagement.model.tables.pojos.Vehicle;
 import my.com.tcsens.vehiclemanagement.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +19,34 @@ public class VehicleService {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public List<Vehicle> getVehicles(String carPlateNum) {
-        return vehicleRepository.getVehicleByCarPlateNumber(carPlateNum)
+    public VehicleDto createVehicle(VehicleDto vehicleProfile) {
+        val vehicle = mapEntity(vehicleProfile);
+        return vehicleRepository.createVehicle(vehicle);
+    }
+
+    public VehicleDto getVehicleById(int vehicleId) {
+        return vehicleRepository.getVehicleById(vehicleId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No record found!"));
+    }
+
+    public List<VehicleDto> getVehicles(String manufactureDate, String carPlateNum, int pageNo, int pageSize) {
+        return vehicleRepository.getVehicleEnquiry(manufactureDate, carPlateNum, pageSize, pageNo)
                 .stream()
                 .filter(Objects::nonNull)
-                .map(this::mapDTO)
                 .collect(Collectors.toList());
     }
 
-    private Vehicle mapDTO(VehicleModel vehicleProfile) {
-        return new Vehicle()
-                .id(Long.valueOf(vehicleProfile.getId()))
-                .carPlatNumber(vehicleProfile.getCarplatNumber())
-                .carMake(vehicleProfile.getMake())
-                .carModel(vehicleProfile.getModel())
-                .chassisNumber(vehicleProfile.getChassisNumber())
-                .axlesCount(vehicleProfile.getAxlesNumber())
-                .tyreCount(vehicleProfile.getTyreNumber())
-                .roadTaxExpiryDate(vehicleProfile.getRoadtaxExpiryDate())
-                .manufactureDate(vehicleProfile.getManufactureYear())
-                .imageName(vehicleProfile.getImageName());
+    private Vehicle mapEntity(VehicleDto vehicle) {
+        return new my.com.tcsens.vehiclemanagement.model.tables.pojos.Vehicle()
+                .setCarplateNum(vehicle.getCarPlatNumber())
+                .setMake(vehicle.getCarMake())
+                .setModel(vehicle.getCarModel())
+                .setChassisNum(vehicle.getChassisNumber())
+                .setAxlesNum(vehicle.getAxlesCount())
+                .setTyreNum(vehicle.getTyreCount())
+                .setRoadtaxExpiry(vehicle.getRoadTaxExpiryDate())
+                .setManufactureYear(vehicle.getManufactureDate());
     }
 }

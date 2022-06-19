@@ -1,10 +1,14 @@
 package my.com.tcsens.vehiclemanagement.service;
 
-import my.com.tcsens.vehiclemanagement.dto.Summon;
-import my.com.tcsens.vehiclemanagement.model.SummonModel;
+import lombok.val;
+import lombok.var;
+import my.com.tcsens.vehiclemanagement.dto.SummonDto;
+
 import my.com.tcsens.vehiclemanagement.repository.SummonRepository;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -13,25 +17,25 @@ import java.util.stream.Collectors;
 public class SummonService {
     private final SummonRepository summonRepository;
 
-    public SummonService(
-            SummonRepository summonRepository) {
+    public SummonService(SummonRepository summonRepository) {
         this.summonRepository = summonRepository;
     }
 
-    public List<Summon> getSummonByCarPlateNumber(String carPlateNumber) {
+    public List<SummonDto> getSummonByCarPlateNumber(String carPlateNumber) {
+//
+//        val record = summonRepository.getSummonsByVehicleNumber(carPlateNumber);
+//        var result = new ArrayList<Summon>();
+//
+//        if(record != null) {
+//            for(my.com.tcsens.vehiclemanagement.models.tables.pojos.Summon summon: record) {
+//                result.add(mapDTO(summon));
+//            }
+//        }
+//        return result ;
 
-        return summonRepository.getSummonByCarPlateNumber(carPlateNumber)
+        return summonRepository.getSummonsByVehicleNumber(carPlateNumber)
                 .stream()
                 .filter(Objects::nonNull)
-                .map(this::mapDTO)
                 .collect(Collectors.toList());
-    }
-
-    private Summon mapDTO(SummonModel summonProfile) {
-        return new Summon().id(summonProfile.getId())
-                .serialNum(summonProfile.getSerialNumber())
-                .fineAmount(BigDecimal.valueOf(summonProfile.getFineAmount()))
-                .location(summonProfile.getLocation_())
-                .officerName(summonProfile.getOfficerName());
     }
 }
