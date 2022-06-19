@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BasicElement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5f654af9-da02-4e9b-8e8b-8a975c24a8d7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<subDataset name="Summon" uuid="f9df04b7-d469-46b9-8c04-870b817a950e">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="carPlateNum" class="java.lang.String"/>
+	<parameter name="brand" class="java.lang.String"/>
+	<parameter name="model" class="java.lang.String"/>
+	<parameter name="totalSummon" class="java.lang.Integer"/>
+	<parameter name="totalAmount" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="443" splitType="Stretch">
+			<image>
+				<reportElement x="178" y="40" width="198" height="190" uuid="7ec9b594-a81b-44da-aa72-8f8eb1481979"/>
+			</image>
+			<staticText>
+				<reportElement x="78" y="270" width="399" height="82" uuid="aa86d5ad-9646-43f7-bbca-fe90f80ba367"/>
+				<textElement textAlignment="Center">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vehicle Summon Summary Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement x="142" y="10" width="270" height="30" uuid="d323db67-66aa-46c6-8cf1-1f69b41968df"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vehicle Summon Summary Report]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="225" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="20" width="122" height="20" uuid="6bbb94b6-cf88-4b56-9cba-b383138d7bda"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Car Plate Number:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="50" width="122" height="20" uuid="ac0bd8ad-a0b8-4481-b5dc-5fa71fe0f8ab"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Brand:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="80" width="122" height="20" uuid="258d8eee-c85e-485f-a4cc-c9126e89c01d"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Model:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="110" width="122" height="20" uuid="e5ac533b-64b3-409b-bc63-d6db23d05381"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Total Summon:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="140" width="122" height="20" uuid="717aff72-8e2d-4a9a-b7d1-13e13694ef65"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Total Amount:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="20" width="100" height="20" uuid="6f1c01cc-388c-473a-996b-0832ea213c80"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{carPlateNum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="50" width="100" height="20" uuid="25723bb6-5b08-4556-a33c-bcfa83c20610"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{brand}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="80" width="100" height="20" uuid="62b64baf-8b6f-4f35-8640-2456c0c181cf"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{model}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="110" width="100" height="20" uuid="fa105536-2fdb-490f-afb6-38fc269d69f9"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalSummon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="140" width="100" height="20" uuid="ed080b69-83be-4a2d-8fa7-c9d99f27200e"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalAmount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="fafca78e-a019-4305-90e4-8e6a2d3463da"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[For Internal Use Only]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="0" width="100" height="20" uuid="d9c6724a-4ccd-40bb-a9d3-76191f16b0ac"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Strictly Confidential]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
