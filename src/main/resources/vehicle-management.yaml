@@ -1,0 +1,237 @@
+openapi: '3.0.2'
+info:
+  title: JPJ Vehicle Management - Training
+  version: '1.2'
+servers:
+  - url: http://localhost:8089/v1
+paths:
+  /vehicle:
+    get:
+      tags:
+        - "Vehicle"
+      summary: Get list of vehicle information
+      description: Get list of vehicle information
+      operationId: getVehicles
+      parameters:
+        - $ref: '#/components/parameters/pageNoParam'
+        - $ref: '#/components/parameters/pageSizeParam'
+        - $ref: '#/components/parameters/carPlateNumberParam'
+      responses:
+        '200':
+          description: Vehicle profile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicles'
+    
+  /vehicle/image:
+    get:
+      tags:
+        - "Vehicle"
+      summary: Get vehicle image
+      description:  Get vehicle image
+      operationId: getVehicleImageByFileName
+      parameters:
+        - name: fileName
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+          '200':
+            description: Vehicle image
+            content:
+              application/octet-stream:
+                schema:
+                  type: string
+                  format: binary
+            headers:
+              Content-Disposition:
+                schema:
+                  type: string
+                  description: | 
+                    Used only with 'application/octet-stream' responses.
+                    Example: attachment; filename="8000541210.pdf"
+
+  /summon:
+    get: 
+      tags:
+        - 'Summons'
+      summary: Get list of summon based on filtering criteria.
+      description: Get list of summon based on filtering criteria.
+      operationId: getSummonByCriteria
+      parameters:
+        - $ref: '#/components/parameters/carPlateNumberParam'
+      responses:
+        '200':
+          description: Summon details for the given car plate number.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Summons'
+
+  /user/token:
+    get: 
+      tags:
+        - 'Users'
+      summary: Get user thumbprint from TokenSec library.
+      description: Get user thumbprint from TokenSec library.
+      operationId: getUserThumbprint
+      parameters:
+        - $ref: '#/components/parameters/userIdParam'
+      responses:
+        '200':
+          description: Summon details for the given car plate number.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+components:
+  parameters:
+    pageNoParam:
+      name: pageNo
+      in: query
+      description: Page number
+      required: true
+      schema:
+        type: integer
+
+    pageSizeParam:
+      name: pageSize
+      in: query
+      description: Page size
+      required: true
+      schema:
+        type: integer
+
+    carPlateNumberParam:
+      name: carPlateNumber
+      in: query
+      description: Vehicle car plate number
+      required: false
+      schema:
+        type: string
+
+    userIdParam:
+      name: userId
+      in: query
+      description: User Id
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    PlatformError:
+      type: object
+      properties:
+        code: 
+          type: string
+        message : 
+          type: string
+        timestamp:
+          type: string
+
+    Vehicles:
+      type: array
+      items:
+        $ref: '#/components/schemas/Vehicle'
+
+    Vehicle:
+      type: object
+      properties:
+        id: 
+          type: integer
+          format: int64
+        carPlatNumber:
+          type: string
+          description: Car plate number
+          example: JPM4412
+          minLength: 1
+          maxLength: 10
+        carMake:
+          type: string
+          description: Car manufacturer 
+          example: Nissan
+          minLength: 1
+          maxLength: 50
+        carModel:
+          type: string
+          description: Car Model
+          example: Almera
+          minLength: 1
+          maxLength: 50
+        chassisNumber:
+          type: string
+          description: Chassis number
+          example: A99381010A91039A
+          minLength: 1
+          maxLength: 60
+        axlesCount:
+          type: integer
+          format: int32
+          description: Number of axles
+          example: 2
+          minimum: 1
+          maximum: 4
+        tyreCount:
+          type: integer
+          format: int32
+          description: Number of tyres
+          example: 4
+          minimum: 1
+          maximum: 4
+        roadTaxExpiryDate:
+          type: string
+          description: Road tax expiry Date (YYYY-MM-DD)
+          example: 2024-01-31
+          minLength: 10
+          maxLength: 10
+        manufactureDate:
+          type: string
+          description: Manufacturer year
+          example: 2020
+          minLength: 4
+          maxLength: 4
+        imageName:
+          type: string 
+          description: Vehicle image name
+          example: JPM4412.jpeg
+          minLength: 1
+          maxLength: 50
+          
+    Summons:
+      type: array
+      items:
+        $ref: '#/components/schemas/Summon'
+
+    Summon:
+      type: object
+      properties:
+        id: 
+          type: integer
+          format: int64
+        serialNum:
+          type: string
+          description: Serial number for the summon
+          example: J001900141
+          minLength: 10
+          maxLength: 10
+        fineAmount:
+          type: number
+          description: Offence summon amount
+          example: 150.00
+          minimum: 10.00
+          maximum: 999.00
+        location:
+          type: string
+          description: Location of offence 
+          example: Batu Caves
+          minLength: 1
+          maxLength: 60
+        officerName:
+          type: string
+          description: Officer name
+          example: Inspector Mohd. Firdaus
+          minLength: 1
+          maxLength: 60
