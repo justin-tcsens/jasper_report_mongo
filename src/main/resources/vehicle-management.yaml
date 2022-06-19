@@ -92,11 +92,16 @@ paths:
         - $ref: '#/components/parameters/carPlateNumberParam'
       responses:
         '200':
-          description: Summon summary for the given car plate number.
-          # content:
-          #   application/json:
-          #     schema:
-          #       $ref: '#/components/schemas/SummonsDto'
+          description: Report in PDF format
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
 
 components:
   parameters:
