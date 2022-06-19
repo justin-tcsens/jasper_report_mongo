@@ -4,6 +4,7 @@ import lombok.val;
 import lombok.var;
 import my.com.tcsens.vehiclemanagement.dto.SummonDto;
 
+import my.com.tcsens.vehiclemanagement.model.SummonSummary;
 import my.com.tcsens.vehiclemanagement.repository.SummonRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.InputStreamResource;
@@ -39,12 +40,17 @@ public class SummonService {
 
     public Resource getSummonSummaryReport(String carPlateNumber) {
         try {
-            //TODO: Retrieval summon information
+
             val report = reportService.generateReceipt(null);
             return new InputStreamResource(new FileInputStream(report));
         } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private SummonSummary getSummonSummary(String carPlateNumber) {
+        //TODO: Implement logic to retrieval summon information
+        return null;
     }
 }

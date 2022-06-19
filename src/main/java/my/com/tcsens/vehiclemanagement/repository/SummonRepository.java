@@ -2,10 +2,15 @@ package my.com.tcsens.vehiclemanagement.repository;
 
 
 import lombok.val;
+import lombok.var;
 import my.com.tcsens.vehiclemanagement.dto.SummonDto;
+import my.com.tcsens.vehiclemanagement.model.SummonDetail;
+import my.com.tcsens.vehiclemanagement.model.SummonSummary;
 import my.com.tcsens.vehiclemanagement.model.tables.pojos.Summon;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,6 +40,31 @@ public class SummonRepository {
         }
 
         return result.stream().map(this::mapDTO).collect(Collectors.toList());
+    }
+
+    public List<SummonDetail> getSummonSummary(String carplateNumber) {
+
+        var condition = DSL.noCondition();
+
+        if(StringUtils.hasLength(carplateNumber)) {
+            condition = VEHICLE.CARPLATE_NUM.eq(carplateNumber);
+        }
+
+        val result = dsl.select(
+                VEHICLE.CARPLATE_NUM.as("carPlateNum"),
+                VEHICLE.MAKE.as("brand"),
+                VEHICLE.MODEL.as("model"),
+                SUMMON.FINE_AMT.as("fineAmount"),
+                SUMMON.SERIAL_NUM.as("serialNumber"))
+                .from(SUMMON)
+                .innerJoin(VEHICLE).on(VEHICLE.ID.eq(SUMMON.VEHICLE_ID))
+                .where(condition)
+                .fetchInto(SummonDetail.class);
+
+        if(Objects.isNull(result)) {
+            return null;
+        }
+        return result;
     }
 
     private SummonDto mapDTO(Summon summonProfile) {
