@@ -40,8 +40,8 @@ public class SummonService {
 
     public Resource getSummonSummaryReport(String carPlateNumber) {
         try {
-
-            val report = reportService.generateReceipt(null);
+            val summonSummary = getSummonSummary(carPlateNumber);
+            val report = reportService.generateReceipt(summonSummary);
             return new InputStreamResource(new FileInputStream(report));
         } catch(Exception e) {
             e.printStackTrace();
