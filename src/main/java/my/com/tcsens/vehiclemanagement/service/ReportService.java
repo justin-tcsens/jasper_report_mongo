@@ -44,7 +44,7 @@ public class ReportService {
             val jasperReport = JasperCompileManager.compileReport(getClass().getResource(REPORT_PATH).openStream());
             return JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(dummyList));
         } catch (Exception e) {
-            throw new  Exception("Failed to generate report...");
+            throw new  Exception("Failed to generate report... ");
         }
     }
 
