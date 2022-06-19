@@ -49,9 +49,9 @@ public class SummonService {
         }
     }
 
-    private SummonSummary getSummonSummary(String carPlateNumber) {
+    private List<SummonSummary> getSummonSummary(String carPlateNumber) {
         //TODO: Implement logic to retrieval summon information
-        val summonDetail = summonRepository.getSummonSummary(carPlateNumber).stream().findFirst().orElse(null);
+        val summonDetail = summonRepository.getSummonSummary(carPlateNumber);
         return summonDetail;
     }
 }

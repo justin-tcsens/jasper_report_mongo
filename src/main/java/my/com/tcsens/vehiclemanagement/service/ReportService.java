@@ -11,16 +11,14 @@ import org.springframework.stereotype.Service;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class ReportService {
-    private static final String REPORT_PATH = "/report/CarSummonReport_v3.jrxml";
+    private static final String REPORT_PATH = "/report/CarSummonReport_v4.jrxml";
 
-    public File generateReport(SummonSummary summonSummary) throws Exception {
+    public File generateReport(List<SummonSummary> summonSummary) throws Exception {
         try {
             val pdfTemp = File.createTempFile(UUID.randomUUID().toString(), ".pdf");
             if(!Objects.isNull(summonSummary)) {
@@ -34,8 +32,13 @@ public class ReportService {
     }
 
     //TODO: Modify business model mapping here
-    private Map<String, Object> mapBusinessModel(SummonSummary summonSummary) {
-        return new ObjectMapper().convertValue(summonSummary, Map.class);
+    private Map<String, Object> mapBusinessModel(List<SummonSummary> summonSummary) {
+        val businessModel = new HashMap<String, Object>();
+        val orderLine = new JRBeanCollectionDataSource(summonSummary);
+        businessModel.put("orderLine", orderLine);
+        val totalAmount = summonSummary.stream().map(SummonSummary::getTotalAmount).reduce(BigDecimal.valueOf(0), BigDecimal::add);
+        businessModel.put("totalAllAmount", totalAmount);
+        return businessModel;
     }
 
     private JasperPrint compileJasperTemplate(Map<String, Object> map) throws Exception {
