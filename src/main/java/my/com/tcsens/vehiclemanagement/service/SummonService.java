@@ -41,7 +41,7 @@ public class SummonService {
     public Resource getSummonSummaryReport(String carPlateNumber) {
         try {
             val summonSummary = getSummonSummary(carPlateNumber);
-            val report = reportService.generateReceipt(summonSummary);
+            val report = reportService.generateReport(summonSummary);
             return new InputStreamResource(new FileInputStream(report));
         } catch(Exception e) {
             e.printStackTrace();
@@ -51,6 +51,7 @@ public class SummonService {
 
     private SummonSummary getSummonSummary(String carPlateNumber) {
         //TODO: Implement logic to retrieval summon information
-        return null;
+        val summonDetail = summonRepository.getSummonSummary(carPlateNumber).stream().findFirst().orElse(null);
+        return summonDetail;
     }
 }

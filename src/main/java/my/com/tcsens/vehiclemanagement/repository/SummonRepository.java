@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 
 import static my.com.tcsens.vehiclemanagement.model.tables.Summon.SUMMON;
 import static my.com.tcsens.vehiclemanagement.model.tables.Vehicle.VEHICLE;
+import static org.jooq.impl.DSL.count;
+import static org.jooq.impl.DSL.sum;
 
 
 @Repository
@@ -42,7 +44,7 @@ public class SummonRepository {
         return result.stream().map(this::mapDTO).collect(Collectors.toList());
     }
 
-    public List<SummonDetail> getSummonSummary(String carplateNumber) {
+    public List<SummonSummary> getSummonSummary(String carplateNumber) {
 
         var condition = DSL.noCondition();
 
@@ -54,12 +56,13 @@ public class SummonRepository {
                 VEHICLE.CARPLATE_NUM.as("carPlateNum"),
                 VEHICLE.MAKE.as("brand"),
                 VEHICLE.MODEL.as("model"),
-                SUMMON.FINE_AMT.as("fineAmount"),
-                SUMMON.SERIAL_NUM.as("serialNumber"))
+                sum(SUMMON.FINE_AMT).as("totalAmount"),
+                count().as("totalSummon"))
                 .from(SUMMON)
                 .innerJoin(VEHICLE).on(VEHICLE.ID.eq(SUMMON.VEHICLE_ID))
                 .where(condition)
-                .fetchInto(SummonDetail.class);
+                .groupBy(VEHICLE.CARPLATE_NUM, VEHICLE.MAKE, VEHICLE.MODEL)
+                .fetchInto(SummonSummary.class);
 
         if(Objects.isNull(result)) {
             return null;

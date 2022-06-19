@@ -1,5 +1,6 @@
 package my.com.tcsens.vehiclemanagement.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import my.com.tcsens.vehiclemanagement.model.SummonSummary;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -17,9 +18,9 @@ import java.util.UUID;
 
 @Service
 public class ReportService {
-    private static final String REPORT_PATH = "/reports/CarSummonReport_v3.jrxml";
+    private static final String REPORT_PATH = "/report/CarSummonReport_v3.jrxml";
 
-    public File generateReceipt(SummonSummary summonSummary) throws Exception {
+    public File generateReport(SummonSummary summonSummary) throws Exception {
         try {
             val pdfTemp = File.createTempFile(UUID.randomUUID().toString(), ".pdf");
             if(!Objects.isNull(summonSummary)) {
@@ -34,7 +35,7 @@ public class ReportService {
 
     //TODO: Modify business model mapping here
     private Map<String, Object> mapBusinessModel(SummonSummary summonSummary) {
-        return null;
+        return new ObjectMapper().convertValue(summonSummary, Map.class);
     }
 
     private JasperPrint compileJasperTemplate(Map<String, Object> map) throws Exception {
