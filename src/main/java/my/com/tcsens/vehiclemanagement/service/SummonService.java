@@ -71,7 +71,6 @@ public class SummonService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private List<SummonSummary> getSummonSummary(String carPlateNumber) {
