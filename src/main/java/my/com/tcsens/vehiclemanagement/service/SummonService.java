@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,11 +43,18 @@ public class SummonService {
         try {
             val summonSummary = getSummonSummary(carPlateNumber);
             val report = reportService.generateReport(summonSummary);
+            storeDocument(report);
             return new InputStreamResource(new FileInputStream(report));
         } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    //TODO: Implement logic to store document in mongoDB
+    private void storeDocument(File file) {
+
     }
 
     private List<SummonSummary> getSummonSummary(String carPlateNumber) {
