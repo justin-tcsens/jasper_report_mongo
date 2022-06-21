@@ -37,6 +37,7 @@
 		<field name="totalAmount" class="java.math.BigDecimal"/>
 	</subDataset>
 	<parameter name="totalAllAmount" class="java.math.BigDecimal"/>
+	<parameter name="JPJLogo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -44,6 +45,7 @@
 		<band height="443" splitType="Stretch">
 			<image>
 				<reportElement x="178" y="40" width="198" height="190" uuid="7ec9b594-a81b-44da-aa72-8f8eb1481979"/>
+				<imageExpression><![CDATA[this.getClass().getResourceAsStream($P{JPJLogo})]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="78" y="270" width="399" height="82" uuid="aa86d5ad-9646-43f7-bbca-fe90f80ba367"/>

@@ -38,6 +38,7 @@ public class ReportService {
         businessModel.put("orderLine", orderLine);
         val totalAmount = summonSummary.stream().map(SummonSummary::getTotalAmount).reduce(BigDecimal.valueOf(0), BigDecimal::add);
         businessModel.put("totalAllAmount", totalAmount);
+        businessModel.put("JPJLogo", "jpj.png");
         return businessModel;
     }
 
